@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Messenger</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Общие стили */
         * {
@@ -16,9 +17,23 @@
             user-select: none;
         }
 
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+            --light-text: #ecf0f1;
+            --background: #ffffff;
+            --light-bg: #f8f9fa;
+            --border-color: #bdc3c7;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--background);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -28,15 +43,16 @@
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            background: var(--background);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             height: 90vh;
             display: flex;
             flex-direction: column;
+            border: 1px solid var(--border-color);
         }
 
         /* Стили для страницы входа */
@@ -51,8 +67,8 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             padding: 30px 20px;
             text-align: center;
             width: 100%;
@@ -61,6 +77,7 @@
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .header p {
@@ -76,14 +93,15 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 100%;
         }
 
         .google-btn {
-            background: #4285f4;
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             border: none;
             padding: 15px 30px;
-            border-radius: 50px;
+            border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             display: flex;
@@ -92,23 +110,68 @@
             gap: 10px;
             margin: 20px auto;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 300px;
         }
 
         .google-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: var(--secondary-color);
         }
 
-        .google-btn img {
-            width: 20px;
-            height: 20px;
+        .google-accounts {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+        }
+
+        .account-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .account-option:hover {
+            background: var(--light-bg);
+            border-color: var(--accent-color);
+        }
+
+        .account-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .account-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .account-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .account-email {
+            font-size: 0.8rem;
+            color: #7f8c8d;
         }
 
         .features {
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 0 0 20px 20px;
+            background: var(--light-bg);
+            border-radius: 0 0 12px 12px;
             width: 100%;
         }
 
@@ -116,13 +179,13 @@
             display: flex;
             align-items: center;
             margin: 15px 0;
-            color: #666;
+            color: var(--text-color);
             justify-content: center;
         }
 
         .feature i {
             margin-right: 10px;
-            color: #667eea;
+            color: var(--accent-color);
         }
 
         /* Стили для мессенджера */
@@ -134,16 +197,16 @@
 
         .sidebar {
             width: 350px;
-            background: white;
-            border-right: 1px solid #e0e0e0;
+            background: var(--light-bg);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
         }
 
         .user-profile {
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -153,13 +216,14 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 3px solid white;
+            border: 3px solid var(--light-text);
             object-fit: cover;
             cursor: pointer;
         }
 
         .user-info h3 {
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .user-info p {
@@ -169,20 +233,21 @@
 
         .search-container {
             padding: 15px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .search-input {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             outline: none;
             font-size: 0.9rem;
+            background: var(--background);
         }
 
         .search-input:focus {
-            border-color: #667eea;
+            border-color: var(--accent-color);
         }
 
         .contacts {
@@ -196,17 +261,17 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border-color);
             transition: background 0.3s ease;
         }
 
         .contact:hover {
-            background: #f8f9fa;
+            background: rgba(0, 0, 0, 0.03);
         }
 
         .contact.active {
-            background: #e3f2fd;
-            border-left: 4px solid #667eea;
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--accent-color);
         }
 
         .contact-avatar {
@@ -216,14 +281,31 @@
             object-fit: cover;
         }
 
+        .contact-info {
+            flex: 1;
+        }
+
         .contact-info h4 {
             margin-bottom: 5px;
-            color: #333;
+            color: var(--text-color);
+            font-weight: 600;
         }
 
         .contact-info p {
-            color: #666;
+            color: #7f8c8d;
             font-size: 0.8rem;
+        }
+
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+            margin-left: auto;
+        }
+
+        .offline {
+            background: var(--border-color);
         }
 
         .chat-area {
@@ -234,8 +316,8 @@
 
         .chat-header {
             padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            background: white;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--background);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -249,12 +331,13 @@
         }
 
         .chat-header-info h3 {
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .chat-header-info p {
-            color: #666;
+            color: #7f8c8d;
             font-size: 0.9rem;
         }
 
@@ -262,27 +345,31 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            background: #f8f9fa;
+            background: var(--light-bg);
+            display: flex;
+            flex-direction: column;
         }
 
         .message {
             max-width: 70%;
             padding: 12px 16px;
             margin-bottom: 15px;
-            border-radius: 18px;
+            border-radius: 12px;
             position: relative;
             word-wrap: break-word;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .message.received {
-            background: white;
+            background: var(--background);
             border-bottom-left-radius: 5px;
             align-self: flex-start;
+            border: 1px solid var(--border-color);
         }
 
         .message.sent {
-            background: #667eea;
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             border-bottom-right-radius: 5px;
             margin-left: auto;
         }
@@ -296,8 +383,8 @@
 
         .message-input-container {
             padding: 20px;
-            border-top: 1px solid #e0e0e0;
-            background: white;
+            border-top: 1px solid var(--border-color);
+            background: var(--background);
             display: flex;
             gap: 10px;
         }
@@ -305,23 +392,24 @@
         .message-input {
             flex: 1;
             padding: 12px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             outline: none;
             font-size: 0.9rem;
+            background: var(--background);
         }
 
         .message-input:focus {
-            border-color: #667eea;
+            border-color: var(--accent-color);
         }
 
         .send-btn {
-            background: #667eea;
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             border: none;
             width: 45px;
             height: 45px;
-            border-radius: 50%;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -330,8 +418,14 @@
         }
 
         .send-btn:hover {
-            background: #5a6fd8;
+            background: var(--secondary-color);
             transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Стили для модальных окон */
@@ -346,15 +440,17 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background: white;
-            border-radius: 15px;
+            background: var(--background);
+            border-radius: 12px;
             padding: 30px;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
         }
 
         .modal-header {
@@ -365,7 +461,8 @@
         }
 
         .modal-header h2 {
-            color: #333;
+            color: var(--text-color);
+            font-weight: 600;
         }
 
         .close-btn {
@@ -373,7 +470,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: #7f8c8d;
         }
 
         .form-group {
@@ -383,21 +480,22 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: var(--text-color);
             font-weight: 500;
         }
 
         .form-control {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             outline: none;
             font-size: 0.9rem;
+            background: var(--background);
         }
 
         .form-control:focus {
-            border-color: #667eea;
+            border-color: var(--accent-color);
         }
 
         .avatar-upload {
@@ -412,7 +510,7 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #e0e0e0;
+            border: 3px solid var(--border-color);
         }
 
         .file-input {
@@ -420,24 +518,24 @@
         }
 
         .file-label {
-            background: #667eea;
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             padding: 10px 20px;
-            border-radius: 25px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .file-label:hover {
-            background: #5a6fd8;
+            background: var(--secondary-color);
         }
 
         .btn {
-            background: #667eea;
-            color: white;
+            background: var(--primary-color);
+            color: var(--light-text);
             border: none;
             padding: 12px 25px;
-            border-radius: 25px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
@@ -445,15 +543,25 @@
         }
 
         .btn:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
+            background: var(--secondary-color);
+        }
+
+        .btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
         }
 
         .error-message {
-            color: #e74c3c;
+            color: var(--error-color);
             font-size: 0.8rem;
             margin-top: 5px;
             display: none;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 50%;
         }
 
         /* Защитные элементы */
@@ -465,7 +573,7 @@
         @media (max-width: 768px) {
             .container {
                 height: 95vh;
-                border-radius: 15px;
+                border-radius: 0;
             }
             
             .messenger-container {
@@ -484,6 +592,57 @@
             .message {
                 max-width: 85%;
             }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .user-profile {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+            
+            .login-section {
+                padding: 20px 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+
+        /* Утилиты */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -499,11 +658,35 @@
             
             <div class="login-section">
                 <button class="google-btn" id="googleLoginBtn">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=" alt="Google">
+                    <i class="fab fa-google"></i>
                     Войти через Google
                 </button>
                 
-                <p style="color: #666; margin-top: 20px; max-width: 400px;">
+                <div class="google-accounts" id="googleAccounts">
+                    <div class="account-option" data-account="1">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 1" class="account-avatar">
+                        <div class="account-info">
+                            <div class="account-name">Алексей Петров</div>
+                            <div class="account-email">alex.petrov@gmail.com</div>
+                        </div>
+                    </div>
+                    <div class="account-option" data-account="2">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 2" class="account-avatar">
+                        <div class="account-info">
+                            <div class="account-name">Мария Иванова</div>
+                            <div class="account-email">maria.ivanova@gmail.com</div>
+                        </div>
+                    </div>
+                    <div class="account-option" data-account="3">
+                        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 3" class="account-avatar">
+                        <div class="account-info">
+                            <div class="account-name">Дмитрий Сидоров</div>
+                            <div class="account-email">dmitry.sidorov@gmail.com</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="color: #7f8c8d; margin-top: 20px; max-width: 400px;">
                     Для использования мессенджера требуется авторизация через Google аккаунт. 
                     Это обеспечивает безопасность и защиту от нежелательных пользователей.
                 </p>
@@ -511,16 +694,16 @@
 
             <div class="features">
                 <div class="feature">
-                    <i>🔒</i> <span>Только Google аутентификация</span>
+                    <i class="fas fa-shield-alt"></i> <span>Только Google аутентификация</span>
                 </div>
                 <div class="feature">
-                    <i>👥</i> <span>Поиск пользователей</span>
+                    <i class="fas fa-search"></i> <span>Поиск пользователей</span>
                 </div>
                 <div class="feature">
-                    <i>🛡️</i> <span>Защита от DDoS атак</span>
+                    <i class="fas fa-user-shield"></i> <span>Защита от DDoS атак</span>
                 </div>
                 <div class="feature">
-                    <i>📷</i> <span>Смена аватарки</span>
+                    <i class="fas fa-camera"></i> <span>Смена аватарки</span>
                 </div>
             </div>
         </div>
@@ -530,7 +713,7 @@
             <!-- Боковая панель с контактами -->
             <div class="sidebar">
                 <div class="user-profile">
-                    <img src="https://via.placeholder.com/50" alt="Avatar" class="avatar" id="userAvatar">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Avatar" class="avatar" id="userAvatar">
                     <div class="user-info">
                         <h3 id="userNickname">User Nickname</h3>
                         <p id="userUsername">@username</p>
@@ -549,7 +732,7 @@
             <!-- Область чата -->
             <div class="chat-area">
                 <div class="chat-header">
-                    <img src="https://via.placeholder.com/45" alt="Contact Avatar" class="chat-header-avatar" id="chatAvatar">
+                    <img src="https://via.placeholder.com/45/ecf0f1/2c3e50?text=?" alt="Contact Avatar" class="chat-header-avatar" id="chatAvatar">
                     <div class="chat-header-info">
                         <h3 id="chatContactName">Выберите чат</h3>
                         <p id="chatContactStatus">Начните общение</p>
@@ -557,21 +740,15 @@
                 </div>
 
                 <div class="messages" id="messagesContainer">
-                    <!-- Сообщения будут добавляться динамически -->
                     <div class="welcome-message">
-                        <p style="text-align: center; color: #666; margin-top: 50%;">
-                            Выберите контакт из списка, чтобы начать общение
-                        </p>
+                        <p>Выберите контакт из списка, чтобы начать общение</p>
                     </div>
                 </div>
 
                 <div class="message-input-container">
                     <input type="text" class="message-input" placeholder="Введите сообщение..." id="messageInput" disabled>
                     <button class="send-btn" id="sendMessageBtn" disabled>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
             </div>
@@ -587,7 +764,7 @@
             </div>
             
             <div class="avatar-upload">
-                <img src="https://via.placeholder.com/120" alt="Avatar Preview" class="avatar-preview" id="avatarPreview">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Avatar Preview" class="avatar-preview" id="avatarPreview">
                 <input type="file" id="avatarInput" class="file-input" accept="image/*">
                 <label for="avatarInput" class="file-label">Выбрать аватар</label>
             </div>
@@ -602,6 +779,7 @@
                 <label for="usernameInput">Юзернейм (только английский)</label>
                 <input type="text" class="form-control" id="usernameInput" placeholder="Введите ваш юзернейм">
                 <div class="error-message" id="usernameError">Юзернейм может содержать только английские буквы, цифры и символы _ -</div>
+                <div class="error-message" id="usernameExistsError">Этот юзернейм уже занят</div>
             </div>
             
             <button class="btn" id="saveProfileBtn">Сохранить</button>
@@ -614,26 +792,25 @@
     <script>
         // Данные пользователей (в реальном приложении будут на сервере)
         const users = [
-            { id: 1, name: "Алексей Петров", username: "alex_petrov", avatar: "https://via.placeholder.com/50/667eea/ffffff?text=AP", online: true },
-            { id: 2, name: "Мария Иванова", username: "maria_ivanova", avatar: "https://via.placeholder.com/50/764ba2/ffffff?text=MI", online: true },
-            { id: 3, name: "Дмитрий Сидоров", username: "dmitry_sidorov", avatar: "https://via.placeholder.com/50/f093fb/ffffff?text=DS", online: false },
-            { id: 4, name: "Екатерина Козлова", username: "ekaterina_koz", avatar: "https://via.placeholder.com/50/4facfe/ffffff?text=EK", online: true },
-            { id: 5, name: "Сергей Волков", username: "sergey_volkov", avatar: "https://via.placeholder.com/50/43e97b/ffffff?text=SV", online: false }
+            { id: 1, name: "Алексей Петров", username: "alex_petrov", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
+            { id: 2, name: "Мария Иванова", username: "maria_ivanova", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
+            { id: 3, name: "Дмитрий Сидоров", username: "dmitry_sidorov", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: false },
+            { id: 4, name: "Екатерина Козлова", username: "ekaterina_koz", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
+            { id: 5, name: "Сергей Волков", username: "sergey_volkov", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: false }
         ];
+
+        // Зарегистрированные юзернеймы
+        const registeredUsernames = users.map(user => user.username);
 
         // Сообщения (в реальном приложении будут на сервере)
         const messages = {
             1: [
                 { text: "Привет! Как дела?", time: "10:30", sent: false },
-                { text: "Привет! Все отлично, спасибо! А у тебя?", time: "10:32", sent: true },
-                { text: "Тоже все хорошо. Хочешь встретиться на выходных?", time: "10:33", sent: false }
+                { text: "Привет! Все отлично, спасибо! А у тебя?", time: "10:32", sent: true }
             ],
             2: [
                 { text: "Добрый день! Высылаю вам документы", time: "09:15", sent: false },
                 { text: "Спасибо, получил. Проверю и отвечу", time: "09:20", sent: true }
-            ],
-            3: [
-                { text: "Напоминаю о завтрашней встрече", time: "18:45", sent: false }
             ]
         };
 
@@ -642,7 +819,7 @@
             id: 0,
             name: "User Nickname",
             username: "@username",
-            avatar: "https://via.placeholder.com/50"
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
         };
 
         // Текущий выбранный чат
@@ -652,6 +829,7 @@
         const loginPage = document.getElementById('loginPage');
         const messengerPage = document.getElementById('messengerPage');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const googleAccounts = document.getElementById('googleAccounts');
         const userAvatar = document.getElementById('userAvatar');
         const userNickname = document.getElementById('userNickname');
         const userUsername = document.getElementById('userUsername');
@@ -671,6 +849,7 @@
         const usernameInput = document.getElementById('usernameInput');
         const nicknameError = document.getElementById('nicknameError');
         const usernameError = document.getElementById('usernameError');
+        const usernameExistsError = document.getElementById('usernameExistsError');
         const saveProfileBtn = document.getElementById('saveProfileBtn');
 
         // Инициализация приложения
@@ -682,7 +861,10 @@
             renderContacts();
             
             // Обработчики событий
-            googleLoginBtn.addEventListener('click', signInWithGoogle);
+            googleLoginBtn.addEventListener('click', showGoogleAccounts);
+            document.querySelectorAll('.account-option').forEach(option => {
+                option.addEventListener('click', handleAccountSelection);
+            });
             userAvatar.addEventListener('click', openProfileModal);
             closeProfileModal.addEventListener('click', closeModal);
             searchInput.addEventListener('input', handleSearch);
@@ -732,25 +914,42 @@
             }, 1000);
         }
 
-        // Авторизация через Google (имитация)
-        function signInWithGoogle() {
-            // В реальном приложении здесь будет OAuth2 авторизация
-            // Для демонстрации просто переходим в мессенджер
+        // Показать выбор аккаунтов Google
+        function showGoogleAccounts() {
+            googleLoginBtn.classList.add('hidden');
+            googleAccounts.style.display = 'flex';
+        }
+
+        // Обработка выбора аккаунта
+        function handleAccountSelection(e) {
+            const accountId = e.currentTarget.dataset.account;
             
             // Показываем анимацию загрузки
-            googleLoginBtn.innerHTML = '<span>Авторизация...</span>';
-            googleLoginBtn.disabled = true;
+            e.currentTarget.innerHTML = '<span>Авторизация...</span>';
             
             setTimeout(() => {
-                // Переход в мессенджер
-                loginPage.style.display = 'none';
-                messengerPage.style.display = 'flex';
-                
-                // Показываем модальное окно настройки профиля
-                setTimeout(() => {
-                    openProfileModal();
-                }, 500);
-            }, 1500);
+                // Устанавливаем выбранного пользователя
+                const selectedUser = users.find(user => user.id == accountId);
+                if (selectedUser) {
+                    currentUser = {...selectedUser};
+                    
+                    // Обновляем интерфейс
+                    userNickname.textContent = currentUser.name;
+                    userUsername.textContent = '@' + currentUser.username;
+                    userAvatar.src = currentUser.avatar;
+                    
+                    // Переход в мессенджер
+                    loginPage.style.display = 'none';
+                    messengerPage.style.display = 'flex';
+                    
+                    // Показываем модальное окно настройки профиля для нового пользователя
+                    if (accountId == 3) {
+                        setTimeout(() => {
+                            openProfileModal();
+                        }, 500);
+                    }
+                }
+            }, 1000);
         }
 
         // Открытие модального окна профиля
@@ -802,22 +1001,32 @@
                 usernameError.style.display = 'none';
             }
             
+            // Проверка на уникальность юзернейма
+            if (valid && registeredUsernames.includes(username) && username !== currentUser.username.replace('@', '')) {
+                usernameExistsError.style.display = 'block';
+                valid = false;
+            } else {
+                usernameExistsError.style.display = 'none';
+            }
+            
             if (valid) {
                 // Обновление данных пользователя
                 currentUser.name = nickname;
-                currentUser.username = '@' + username;
+                currentUser.username = username;
                 currentUser.avatar = avatarPreview.src;
+                
+                // Обновление зарегистрированных юзернеймов
+                if (!registeredUsernames.includes(username)) {
+                    registeredUsernames.push(username);
+                }
                 
                 // Обновление интерфейса
                 userNickname.textContent = currentUser.name;
-                userUsername.textContent = currentUser.username;
+                userUsername.textContent = '@' + currentUser.username;
                 userAvatar.src = currentUser.avatar;
                 
                 // Закрытие модального окна
                 closeModal();
-                
-                // Показываем уведомление об успешном сохранении
-                alert('Профиль успешно обновлен!');
             }
         }
 
@@ -825,16 +1034,20 @@
         function resetErrors() {
             nicknameError.style.display = 'none';
             usernameError.style.display = 'none';
+            usernameExistsError.style.display = 'none';
         }
 
         // Рендеринг списка контактов
         function renderContacts(filter = '') {
             contactsList.innerHTML = '';
             
-            const filteredUsers = users.filter(user => 
-                user.name.toLowerCase().includes(filter.toLowerCase()) || 
-                user.username.toLowerCase().includes(filter.toLowerCase())
-            );
+            // Фильтруем текущего пользователя из списка контактов
+            const filteredUsers = users
+                .filter(user => user.id !== currentUser.id)
+                .filter(user => 
+                    user.name.toLowerCase().includes(filter.toLowerCase()) || 
+                    user.username.toLowerCase().includes(filter.toLowerCase())
+                );
             
             if (filteredUsers.length === 0) {
                 contactsList.innerHTML = '<div class="contact"><div class="contact-info"><p>Пользователи не найдены</p></div></div>';
@@ -852,6 +1065,7 @@
                         <h4>${user.name}</h4>
                         <p>${user.online ? 'В сети' : 'Не в сети'}</p>
                     </div>
+                    <div class="online-indicator ${user.online ? '' : 'offline'}"></div>
                 `;
                 
                 contactElement.addEventListener('click', () => selectChat(user));
@@ -893,8 +1107,8 @@
         function renderMessages(userId) {
             messagesContainer.innerHTML = '';
             
-            if (!messages[userId]) {
-                messagesContainer.innerHTML = '<div class="welcome-message"><p style="text-align: center; color: #666; margin-top: 50%;">Нет сообщений</p></div>';
+            if (!messages[userId] || messages[userId].length === 0) {
+                messagesContainer.innerHTML = '<div class="welcome-message"><p>Нет сообщений. Начните общение!</p></div>';
                 return;
             }
             
@@ -941,33 +1155,6 @@
             
             // В реальном приложении здесь будет отправка на сервер
             // и добавление в хранилище сообщений
-            
-            // Имитация ответа (через 1-3 секунды)
-            setTimeout(() => {
-                const replies = [
-                    "Интересно!",
-                    "Спасибо за информацию",
-                    "Я понял",
-                    "Давайте обсудим это подробнее",
-                    "Хорошо, договорились"
-                ];
-                
-                const randomReply = replies[Math.floor(Math.random() * replies.length)];
-                
-                const replyElement = document.createElement('div');
-                replyElement.className = 'message received';
-                
-                const replyTime = new Date();
-                const replyTimeStr = `${replyTime.getHours()}:${replyTime.getMinutes().toString().padStart(2, '0')}`;
-                
-                replyElement.innerHTML = `
-                    <div class="message-text">${randomReply}</div>
-                    <div class="message-time">${replyTimeStr}</div>
-                `;
-                
-                messagesContainer.appendChild(replyElement);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 1000 + Math.random() * 2000);
         }
     </script>
 </body>
