@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Messenger</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стили для страницы входа */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .login-section {
+            padding: 40px 30px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .google-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+
+        .google-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .features {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+            width: 100%;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: #666;
+            justify-content: center;
+        }
+
+        .feature i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+        /* Стили для мессенджера */
+        .messenger-container {
+            display: none;
+            height: 100%;
+            flex-direction: row;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-profile {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .user-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .search-container {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .contacts {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s ease;
+        }
+
+        .contact:hover {
+            background: #f8f9fa;
+        }
+
+        .contact.active {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+        }
+
+        .contact-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .contact-info h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .contact-info p {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-header-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .chat-header-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.received {
+            background: white;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+
+        .message.sent {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .message-input-container {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .message-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.05);
+        }
+
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+        }
+
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e0e0e0;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            background: #5a6fd8;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Защитные элементы */
+        .anti-inspect {
+            display: none !important;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                height: 95vh;
+                border-radius: 15px;
+            }
+            
+            .messenger-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 40%;
+            }
+            
+            .chat-area {
+                height: 60%;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер приложения -->
+    <div class="container">
+        <!-- Страница входа -->
+        <div class="login-container" id="loginPage">
+            <div class="header">
+                <h1>Secure Messenger</h1>
+                <p>Безопасное общение с защитой от DDoS</p>
+            </div>
+            
+            <div class="login-section">
+                <button class="google-btn" id="googleLoginBtn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=" alt="Google">
+                    Войти через Google
+                </button>
+                
+                <p style="color: #666; margin-top: 20px; max-width: 400px;">
+                    Для использования мессенджера требуется авторизация через Google аккаунт. 
+                    Это обеспечивает безопасность и защиту от нежелательных пользователей.
+                </p>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <i>🔒</i> <span>Только Google аутентификация</span>
+                </div>
+                <div class="feature">
+                    <i>👥</i> <span>Поиск пользователей</span>
+                </div>
+                <div class="feature">
+                    <i>🛡️</i> <span>Защита от DDoS атак</span>
+                </div>
+                <div class="feature">
+                    <i>📷</i> <span>Смена аватарки</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Интерфейс мессенджера -->
+        <div class="messenger-container" id="messengerPage">
+            <!-- Боковая панель с контактами -->
+            <div class="sidebar">
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/50" alt="Avatar" class="avatar" id="userAvatar">
+                    <div class="user-info">
+                        <h3 id="userNickname">User Nickname</h3>
+                        <p id="userUsername">@username</p>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Поиск пользователей..." id="searchInput">
+                </div>
+
+                <div class="contacts" id="contactsList">
+                    <!-- Контакты будут добавляться динамически -->
+                </div>
+            </div>
+
+            <!-- Область чата -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <img src="https://via.placeholder.com/45" alt="Contact Avatar" class="chat-header-avatar" id="chatAvatar">
+                    <div class="chat-header-info">
+                        <h3 id="chatContactName">Выберите чат</h3>
+                        <p id="chatContactStatus">Начните общение</p>
+                    </div>
+                </div>
+
+                <div class="messages" id="messagesContainer">
+                    <!-- Сообщения будут добавляться динамически -->
+                    <div class="welcome-message">
+                        <p style="text-align: center; color: #666; margin-top: 50%;">
+                            Выберите контакт из списка, чтобы начать общение
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message-input-container">
+                    <input type="text" class="message-input" placeholder="Введите сообщение..." id="messageInput" disabled>
+                    <button class="send-btn" id="sendMessageBtn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно настройки профиля -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Настройки профиля</h2>
+                <button class="close-btn" id="closeProfileModal">&times;</button>
+            </div>
+            
+            <div class="avatar-upload">
+                <img src="https://via.placeholder.com/120" alt="Avatar Preview" class="avatar-preview" id="avatarPreview">
+                <input type="file" id="avatarInput" class="file-input" accept="image/*">
+                <label for="avatarInput" class="file-label">Выбрать аватар</label>
+            </div>
+            
+            <div class="form-group">
+                <label for="nicknameInput">Никнейм (любой язык)</label>
+                <input type="text" class="form-control" id="nicknameInput" placeholder="Введите ваш никнейм">
+                <div class="error-message" id="nicknameError">Никнейм не может быть пустым</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="usernameInput">Юзернейм (только английский)</label>
+                <input type="text" class="form-control" id="usernameInput" placeholder="Введите ваш юзернейм">
+                <div class="error-message" id="usernameError">Юзернейм может содержать только английские буквы, цифры и символы _ -</div>
+            </div>
+            
+            <button class="btn" id="saveProfileBtn">Сохранить</button>
+        </div>
+    </div>
+
+    <!-- Скрытые элементы защиты -->
+    <div class="anti-inspect" id="protection"></div>
+
+    <script>
+        // Данные пользователей (в реальном приложении будут на сервере)
+        const users = [
+            { id: 1, name: "Алексей Петров", username: "alex_petrov", avatar: "https://via.placeholder.com/50/667eea/ffffff?text=AP", online: true },
+            { id: 2, name: "Мария Иванова", username: "maria_ivanova", avatar: "https://via.placeholder.com/50/764ba2/ffffff?text=MI", online: true },
+            { id: 3, name: "Дмитрий Сидоров", username: "dmitry_sidorov", avatar: "https://via.placeholder.com/50/f093fb/ffffff?text=DS", online: false },
+            { id: 4, name: "Екатерина Козлова", username: "ekaterina_koz", avatar: "https://via.placeholder.com/50/4facfe/ffffff?text=EK", online: true },
+            { id: 5, name: "Сергей Волков", username: "sergey_volkov", avatar: "https://via.placeholder.com/50/43e97b/ffffff?text=SV", online: false }
+        ];
+
+        // Сообщения (в реальном приложении будут на сервере)
+        const messages = {
+            1: [
+                { text: "Привет! Как дела?", time: "10:30", sent: false },
+                { text: "Привет! Все отлично, спасибо! А у тебя?", time: "10:32", sent: true },
+                { text: "Тоже все хорошо. Хочешь встретиться на выходных?", time: "10:33", sent: false }
+            ],
+            2: [
+                { text: "Добрый день! Высылаю вам документы", time: "09:15", sent: false },
+                { text: "Спасибо, получил. Проверю и отвечу", time: "09:20", sent: true }
+            ],
+            3: [
+                { text: "Напоминаю о завтрашней встрече", time: "18:45", sent: false }
+            ]
+        };
+
+        // Текущий пользователь
+        let currentUser = {
+            id: 0,
+            name: "User Nickname",
+            username: "@username",
+            avatar: "https://via.placeholder.com/50"
+        };
+
+        // Текущий выбранный чат
+        let currentChat = null;
+
+        // DOM элементы
+        const loginPage = document.getElementById('loginPage');
+        const messengerPage = document.getElementById('messengerPage');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const userNickname = document.getElementById('userNickname');
+        const userUsername = document.getElementById('userUsername');
+        const searchInput = document.getElementById('searchInput');
+        const contactsList = document.getElementById('contactsList');
+        const chatAvatar = document.getElementById('chatAvatar');
+        const chatContactName = document.getElementById('chatContactName');
+        const chatContactStatus = document.getElementById('chatContactStatus');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const profileModal = document.getElementById('profileModal');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatarInput = document.getElementById('avatarInput');
+        const nicknameInput = document.getElementById('nicknameInput');
+        const usernameInput = document.getElementById('usernameInput');
+        const nicknameError = document.getElementById('nicknameError');
+        const usernameError = document.getElementById('usernameError');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', function() {
+            // Защита от инспектирования
+            setupProtection();
+            
+            // Инициализация интерфейса
+            renderContacts();
+            
+            // Обработчики событий
+            googleLoginBtn.addEventListener('click', signInWithGoogle);
+            userAvatar.addEventListener('click', openProfileModal);
+            closeProfileModal.addEventListener('click', closeModal);
+            searchInput.addEventListener('input', handleSearch);
+            sendMessageBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+            avatarInput.addEventListener('change', handleAvatarChange);
+            saveProfileBtn.addEventListener('click', saveProfile);
+            
+            // Закрытие модального окна при клике вне его
+            window.addEventListener('click', function(e) {
+                if (e.target === profileModal) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Защита от инспектирования и копирования
+        function setupProtection() {
+            // Блокировка контекстного меню
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // Блокировка клавиш разработчика
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                    (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+                    (e.ctrlKey && e.key === 'u')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Обнаружение открытия DevTools
+            setInterval(function() {
+                const start = Date.now();
+                debugger;
+                const end = Date.now();
+                if (end - start > 100) {
+                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#f0f0f0;color:red;font-size:24px;font-weight:bold;">⚠️ Доступ запрещен</div>';
+                    throw new Error("DevTools detected");
+                }
+            }, 1000);
+        }
+
+        // Авторизация через Google (имитация)
+        function signInWithGoogle() {
+            // В реальном приложении здесь будет OAuth2 авторизация
+            // Для демонстрации просто переходим в мессенджер
+            
+            // Показываем анимацию загрузки
+            googleLoginBtn.innerHTML = '<span>Авторизация...</span>';
+            googleLoginBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Переход в мессенджер
+                loginPage.style.display = 'none';
+                messengerPage.style.display = 'flex';
+                
+                // Показываем модальное окно настройки профиля
+                setTimeout(() => {
+                    openProfileModal();
+                }, 500);
+            }, 1500);
+        }
+
+        // Открытие модального окна профиля
+        function openProfileModal() {
+            profileModal.style.display = 'flex';
+            nicknameInput.value = currentUser.name;
+            usernameInput.value = currentUser.username.replace('@', '');
+            avatarPreview.src = currentUser.avatar;
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            profileModal.style.display = 'none';
+            resetErrors();
+        }
+
+        // Обработка изменения аватарки
+        function handleAvatarChange(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Сохранение профиля
+        function saveProfile() {
+            const nickname = nicknameInput.value.trim();
+            const username = usernameInput.value.trim();
+            let valid = true;
+            
+            // Валидация никнейма
+            if (!nickname) {
+                nicknameError.style.display = 'block';
+                valid = false;
+            } else {
+                nicknameError.style.display = 'none';
+            }
+            
+            // Валидация юзернейма (только английские буквы, цифры, _ и -)
+            const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+            if (!username || !usernameRegex.test(username)) {
+                usernameError.style.display = 'block';
+                valid = false;
+            } else {
+                usernameError.style.display = 'none';
+            }
+            
+            if (valid) {
+                // Обновление данных пользователя
+                currentUser.name = nickname;
+                currentUser.username = '@' + username;
+                currentUser.avatar = avatarPreview.src;
+                
+                // Обновление интерфейса
+                userNickname.textContent = currentUser.name;
+                userUsername.textContent = currentUser.username;
+                userAvatar.src = currentUser.avatar;
+                
+                // Закрытие модального окна
+                closeModal();
+                
+                // Показываем уведомление об успешном сохранении
+                alert('Профиль успешно обновлен!');
+            }
+        }
+
+        // Сброс ошибок
+        function resetErrors() {
+            nicknameError.style.display = 'none';
+            usernameError.style.display = 'none';
+        }
+
+        // Рендеринг списка контактов
+        function renderContacts(filter = '') {
+            contactsList.innerHTML = '';
+            
+            const filteredUsers = users.filter(user => 
+                user.name.toLowerCase().includes(filter.toLowerCase()) || 
+                user.username.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filteredUsers.length === 0) {
+                contactsList.innerHTML = '<div class="contact"><div class="contact-info"><p>Пользователи не найдены</p></div></div>';
+                return;
+            }
+            
+            filteredUsers.forEach(user => {
+                const contactElement = document.createElement('div');
+                contactElement.className = 'contact';
+                contactElement.dataset.userId = user.id;
+                
+                contactElement.innerHTML = `
+                    <img src="${user.avatar}" alt="${user.name}" class="contact-avatar">
+                    <div class="contact-info">
+                        <h4>${user.name}</h4>
+                        <p>${user.online ? 'В сети' : 'Не в сети'}</p>
+                    </div>
+                `;
+                
+                contactElement.addEventListener('click', () => selectChat(user));
+                contactsList.appendChild(contactElement);
+            });
+        }
+
+        // Обработка поиска
+        function handleSearch() {
+            renderContacts(searchInput.value);
+        }
+
+        // Выбор чата
+        function selectChat(user) {
+            currentChat = user;
+            
+            // Обновление заголовка чата
+            chatAvatar.src = user.avatar;
+            chatContactName.textContent = user.name;
+            chatContactStatus.textContent = user.online ? 'В сети' : 'Не в сети';
+            
+            // Активация поля ввода сообщения
+            messageInput.disabled = false;
+            sendMessageBtn.disabled = false;
+            
+            // Показ сообщений
+            renderMessages(user.id);
+            
+            // Подсветка активного чата
+            document.querySelectorAll('.contact').forEach(contact => {
+                contact.classList.remove('active');
+                if (parseInt(contact.dataset.userId) === user.id) {
+                    contact.classList.add('active');
+                }
+            });
+        }
+
+        // Рендеринг сообщений
+        function renderMessages(userId) {
+            messagesContainer.innerHTML = '';
+            
+            if (!messages[userId]) {
+                messagesContainer.innerHTML = '<div class="welcome-message"><p style="text-align: center; color: #666; margin-top: 50%;">Нет сообщений</p></div>';
+                return;
+            }
+            
+            messages[userId].forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${message.sent ? 'sent' : 'received'}`;
+                
+                messageElement.innerHTML = `
+                    <div class="message-text">${message.text}</div>
+                    <div class="message-time">${message.time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageElement);
+            });
+            
+            // Прокрутка к последнему сообщению
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Отправка сообщения
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text || !currentChat) return;
+            
+            // Добавление сообщения в интерфейс
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message sent';
+            
+            const now = new Date();
+            const time = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            messageElement.innerHTML = `
+                <div class="message-text">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageElement);
+            
+            // Очистка поля ввода
+            messageInput.value = '';
+            
+            // Прокрутка к последнему сообщению
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // В реальном приложении здесь будет отправка на сервер
+            // и добавление в хранилище сообщений
+            
+            // Имитация ответа (через 1-3 секунды)
+            setTimeout(() => {
+                const replies = [
+                    "Интересно!",
+                    "Спасибо за информацию",
+                    "Я понял",
+                    "Давайте обсудим это подробнее",
+                    "Хорошо, договорились"
+                ];
+                
+                const randomReply = replies[Math.floor(Math.random() * replies.length)];
+                
+                const replyElement = document.createElement('div');
+                replyElement.className = 'message received';
+                
+                const replyTime = new Date();
+                const replyTimeStr = `${replyTime.getHours()}:${replyTime.getMinutes().toString().padStart(2, '0')}`;
+                
+                replyElement.innerHTML = `
+                    <div class="message-text">${randomReply}</div>
+                    <div class="message-time">${replyTimeStr}</div>
+                `;
+                
+                messagesContainer.appendChild(replyElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000 + Math.random() * 2000);
+        }
+    </script>
+</body>
+</html>
