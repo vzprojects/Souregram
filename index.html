@@ -168,6 +168,23 @@
             color: #7f8c8d;
         }
 
+        .add-account {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 15px;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--accent-color);
+        }
+
+        .add-account:hover {
+            border-color: var(--accent-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
         .features {
             padding: 20px;
             background: var(--light-bg);
@@ -663,26 +680,9 @@
                 </button>
                 
                 <div class="google-accounts" id="googleAccounts">
-                    <div class="account-option" data-account="1">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 1" class="account-avatar">
-                        <div class="account-info">
-                            <div class="account-name">Алексей Петров</div>
-                            <div class="account-email">alex.petrov@gmail.com</div>
-                        </div>
-                    </div>
-                    <div class="account-option" data-account="2">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 2" class="account-avatar">
-                        <div class="account-info">
-                            <div class="account-name">Мария Иванова</div>
-                            <div class="account-email">maria.ivanova@gmail.com</div>
-                        </div>
-                    </div>
-                    <div class="account-option" data-account="3">
-                        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Account 3" class="account-avatar">
-                        <div class="account-info">
-                            <div class="account-name">Дмитрий Сидоров</div>
-                            <div class="account-email">dmitry.sidorov@gmail.com</div>
-                        </div>
+                    <div class="add-account" id="addAccountBtn">
+                        <i class="fas fa-plus"></i>
+                        Добавить аккаунт Google
                     </div>
                 </div>
                 
@@ -713,7 +713,7 @@
             <!-- Боковая панель с контактами -->
             <div class="sidebar">
                 <div class="user-profile">
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Avatar" class="avatar" id="userAvatar">
+                    <img src="" alt="Avatar" class="avatar" id="userAvatar">
                     <div class="user-info">
                         <h3 id="userNickname">User Nickname</h3>
                         <p id="userUsername">@username</p>
@@ -764,7 +764,7 @@
             </div>
             
             <div class="avatar-upload">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Avatar Preview" class="avatar-preview" id="avatarPreview">
+                <img src="" alt="Avatar Preview" class="avatar-preview" id="avatarPreview">
                 <input type="file" id="avatarInput" class="file-input" accept="image/*">
                 <label for="avatarInput" class="file-label">Выбрать аватар</label>
             </div>
@@ -786,41 +786,48 @@
         </div>
     </div>
 
+    <!-- Модальное окно добавления аккаунта -->
+    <div class="modal" id="addAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить Google аккаунт</h2>
+                <button class="close-btn" id="closeAddAccountModal">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="accountName">Имя</label>
+                <input type="text" class="form-control" id="accountName" placeholder="Введите ваше имя">
+            </div>
+            
+            <div class="form-group">
+                <label for="accountEmail">Email</label>
+                <input type="email" class="form-control" id="accountEmail" placeholder="Введите ваш email">
+            </div>
+            
+            <div class="form-group">
+                <label for="accountAvatar">Аватар (URL)</label>
+                <input type="text" class="form-control" id="accountAvatar" placeholder="Введите URL аватара">
+            </div>
+            
+            <button class="btn" id="addAccountConfirmBtn">Добавить аккаунт</button>
+        </div>
+    </div>
+
     <!-- Скрытые элементы защиты -->
     <div class="anti-inspect" id="protection"></div>
 
     <script>
-        // Данные пользователей (в реальном приложении будут на сервере)
-        const users = [
-            { id: 1, name: "Алексей Петров", username: "alex_petrov", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
-            { id: 2, name: "Мария Иванова", username: "maria_ivanova", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
-            { id: 3, name: "Дмитрий Сидоров", username: "dmitry_sidorov", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: false },
-            { id: 4, name: "Екатерина Козлова", username: "ekaterina_koz", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: true },
-            { id: 5, name: "Сергей Волков", username: "sergey_volkov", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80", online: false }
-        ];
-
         // Зарегистрированные юзернеймы
-        const registeredUsernames = users.map(user => user.username);
-
-        // Сообщения (в реальном приложении будут на сервере)
-        const messages = {
-            1: [
-                { text: "Привет! Как дела?", time: "10:30", sent: false },
-                { text: "Привет! Все отлично, спасибо! А у тебя?", time: "10:32", sent: true }
-            ],
-            2: [
-                { text: "Добрый день! Высылаю вам документы", time: "09:15", sent: false },
-                { text: "Спасибо, получил. Проверю и отвечу", time: "09:20", sent: true }
-            ]
-        };
-
+        let registeredUsernames = JSON.parse(localStorage.getItem('registeredUsernames')) || [];
+        
+        // Сохраненные аккаунты
+        let savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) || [];
+        
         // Текущий пользователь
-        let currentUser = {
-            id: 0,
-            name: "User Nickname",
-            username: "@username",
-            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
-        };
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        
+        // Сообщения (в реальном приложении будут на сервере)
+        const messages = {};
 
         // Текущий выбранный чат
         let currentChat = null;
@@ -830,6 +837,7 @@
         const messengerPage = document.getElementById('messengerPage');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
         const googleAccounts = document.getElementById('googleAccounts');
+        const addAccountBtn = document.getElementById('addAccountBtn');
         const userAvatar = document.getElementById('userAvatar');
         const userNickname = document.getElementById('userNickname');
         const userUsername = document.getElementById('userUsername');
@@ -851,20 +859,31 @@
         const usernameError = document.getElementById('usernameError');
         const usernameExistsError = document.getElementById('usernameExistsError');
         const saveProfileBtn = document.getElementById('saveProfileBtn');
+        const addAccountModal = document.getElementById('addAccountModal');
+        const closeAddAccountModal = document.getElementById('closeAddAccountModal');
+        const addAccountConfirmBtn = document.getElementById('addAccountConfirmBtn');
 
         // Инициализация приложения
         document.addEventListener('DOMContentLoaded', function() {
             // Защита от инспектирования
             setupProtection();
             
+            // Проверяем, есть ли сохраненная сессия
+            if (currentUser) {
+                showMessenger();
+            } else {
+                showLogin();
+            }
+            
             // Инициализация интерфейса
+            renderAccounts();
             renderContacts();
             
             // Обработчики событий
             googleLoginBtn.addEventListener('click', showGoogleAccounts);
-            document.querySelectorAll('.account-option').forEach(option => {
-                option.addEventListener('click', handleAccountSelection);
-            });
+            addAccountBtn.addEventListener('click', openAddAccountModal);
+            closeAddAccountModal.addEventListener('click', closeAddAccountModalFunc);
+            addAccountConfirmBtn.addEventListener('click', addNewAccount);
             userAvatar.addEventListener('click', openProfileModal);
             closeProfileModal.addEventListener('click', closeModal);
             searchInput.addEventListener('input', handleSearch);
@@ -875,10 +894,13 @@
             avatarInput.addEventListener('change', handleAvatarChange);
             saveProfileBtn.addEventListener('click', saveProfile);
             
-            // Закрытие модального окна при клике вне его
+            // Закрытие модальных окон при клике вне их
             window.addEventListener('click', function(e) {
                 if (e.target === profileModal) {
                     closeModal();
+                }
+                if (e.target === addAccountModal) {
+                    closeAddAccountModalFunc();
                 }
             });
         });
@@ -914,49 +936,145 @@
             }, 1000);
         }
 
+        // Показать страницу входа
+        function showLogin() {
+            loginPage.style.display = 'flex';
+            messengerPage.style.display = 'none';
+        }
+
+        // Показать мессенджер
+        function showMessenger() {
+            loginPage.style.display = 'none';
+            messengerPage.style.display = 'flex';
+            
+            // Обновляем интерфейс текущего пользователя
+            if (currentUser) {
+                userNickname.textContent = currentUser.name;
+                userUsername.textContent = '@' + currentUser.username;
+                userAvatar.src = currentUser.avatar;
+            }
+        }
+
         // Показать выбор аккаунтов Google
         function showGoogleAccounts() {
             googleLoginBtn.classList.add('hidden');
             googleAccounts.style.display = 'flex';
         }
 
+        // Рендеринг сохраненных аккаунтов
+        function renderAccounts() {
+            const accountsContainer = document.getElementById('googleAccounts');
+            accountsContainer.innerHTML = '';
+            
+            // Добавляем кнопку добавления аккаунта
+            const addButton = document.createElement('div');
+            addButton.className = 'add-account';
+            addButton.id = 'addAccountBtn';
+            addButton.innerHTML = '<i class="fas fa-plus"></i> Добавить аккаунт Google';
+            addButton.addEventListener('click', openAddAccountModal);
+            accountsContainer.appendChild(addButton);
+            
+            // Добавляем сохраненные аккаунты
+            savedAccounts.forEach((account, index) => {
+                const accountElement = document.createElement('div');
+                accountElement.className = 'account-option';
+                accountElement.dataset.accountIndex = index;
+                
+                accountElement.innerHTML = `
+                    <img src="${account.avatar}" alt="${account.name}" class="account-avatar">
+                    <div class="account-info">
+                        <div class="account-name">${account.name}</div>
+                        <div class="account-email">${account.email}</div>
+                    </div>
+                `;
+                
+                accountElement.addEventListener('click', () => handleAccountSelection(index));
+                accountsContainer.appendChild(accountElement);
+            });
+        }
+
         // Обработка выбора аккаунта
-        function handleAccountSelection(e) {
-            const accountId = e.currentTarget.dataset.account;
+        function handleAccountSelection(accountIndex) {
+            const account = savedAccounts[accountIndex];
             
             // Показываем анимацию загрузки
-            e.currentTarget.innerHTML = '<span>Авторизация...</span>';
+            const accountElement = document.querySelector(`[data-account-index="${accountIndex}"]`);
+            const originalHTML = accountElement.innerHTML;
+            accountElement.innerHTML = '<span>Авторизация...</span>';
             
             setTimeout(() => {
                 // Устанавливаем выбранного пользователя
-                const selectedUser = users.find(user => user.id == accountId);
-                if (selectedUser) {
-                    currentUser = {...selectedUser};
-                    
-                    // Обновляем интерфейс
-                    userNickname.textContent = currentUser.name;
-                    userUsername.textContent = '@' + currentUser.username;
-                    userAvatar.src = currentUser.avatar;
-                    
-                    // Переход в мессенджер
-                    loginPage.style.display = 'none';
-                    messengerPage.style.display = 'flex';
-                    
-                    // Показываем модальное окно настройки профиля для нового пользователя
-                    if (accountId == 3) {
-                        setTimeout(() => {
-                            openProfileModal();
-                        }, 500);
-                    }
+                currentUser = {
+                    id: accountIndex,
+                    name: account.name,
+                    username: account.username || account.name.toLowerCase().replace(/\s+/g, '_'),
+                    avatar: account.avatar,
+                    email: account.email
+                };
+                
+                // Сохраняем в localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Показываем мессенджер
+                showMessenger();
+                
+                // Показываем модальное окно настройки профиля для нового пользователя
+                if (!account.username) {
+                    setTimeout(() => {
+                        openProfileModal();
+                    }, 500);
                 }
             }, 1000);
+        }
+
+        // Открытие модального окна добавления аккаунта
+        function openAddAccountModal() {
+            addAccountModal.style.display = 'flex';
+        }
+
+        // Закрытие модального окна добавления аккаунта
+        function closeAddAccountModalFunc() {
+            addAccountModal.style.display = 'none';
+            // Очищаем поля
+            document.getElementById('accountName').value = '';
+            document.getElementById('accountEmail').value = '';
+            document.getElementById('accountAvatar').value = '';
+        }
+
+        // Добавление нового аккаунта
+        function addNewAccount() {
+            const name = document.getElementById('accountName').value.trim();
+            const email = document.getElementById('accountEmail').value.trim();
+            const avatar = document.getElementById('accountAvatar').value.trim() || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80';
+            
+            if (!name || !email) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            // Создаем новый аккаунт
+            const newAccount = {
+                name: name,
+                email: email,
+                avatar: avatar
+            };
+            
+            // Добавляем в массив сохраненных аккаунтов
+            savedAccounts.push(newAccount);
+            localStorage.setItem('savedAccounts', JSON.stringify(savedAccounts));
+            
+            // Обновляем интерфейс
+            renderAccounts();
+            
+            // Закрываем модальное окно
+            closeAddAccountModalFunc();
         }
 
         // Открытие модального окна профиля
         function openProfileModal() {
             profileModal.style.display = 'flex';
             nicknameInput.value = currentUser.name;
-            usernameInput.value = currentUser.username.replace('@', '');
+            usernameInput.value = currentUser.username;
             avatarPreview.src = currentUser.avatar;
         }
 
@@ -1002,7 +1120,7 @@
             }
             
             // Проверка на уникальность юзернейма
-            if (valid && registeredUsernames.includes(username) && username !== currentUser.username.replace('@', '')) {
+            if (valid && registeredUsernames.includes(username) && username !== currentUser.username) {
                 usernameExistsError.style.display = 'block';
                 valid = false;
             } else {
@@ -1018,7 +1136,19 @@
                 // Обновление зарегистрированных юзернеймов
                 if (!registeredUsernames.includes(username)) {
                     registeredUsernames.push(username);
+                    localStorage.setItem('registeredUsernames', JSON.stringify(registeredUsernames));
                 }
+                
+                // Обновление сохраненного аккаунта
+                if (savedAccounts[currentUser.id]) {
+                    savedAccounts[currentUser.id].name = nickname;
+                    savedAccounts[currentUser.id].username = username;
+                    savedAccounts[currentUser.id].avatar = avatarPreview.src;
+                    localStorage.setItem('savedAccounts', JSON.stringify(savedAccounts));
+                }
+                
+                // Сохраняем текущего пользователя
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 
                 // Обновление интерфейса
                 userNickname.textContent = currentUser.name;
@@ -1042,11 +1172,11 @@
             contactsList.innerHTML = '';
             
             // Фильтруем текущего пользователя из списка контактов
-            const filteredUsers = users
-                .filter(user => user.id !== currentUser.id)
+            const filteredUsers = savedAccounts
+                .filter((user, index) => index !== currentUser.id)
                 .filter(user => 
                     user.name.toLowerCase().includes(filter.toLowerCase()) || 
-                    user.username.toLowerCase().includes(filter.toLowerCase())
+                    (user.username && user.username.toLowerCase().includes(filter.toLowerCase()))
                 );
             
             if (filteredUsers.length === 0) {
@@ -1054,21 +1184,21 @@
                 return;
             }
             
-            filteredUsers.forEach(user => {
+            filteredUsers.forEach((user, index) => {
                 const contactElement = document.createElement('div');
                 contactElement.className = 'contact';
-                contactElement.dataset.userId = user.id;
+                contactElement.dataset.userId = index;
                 
                 contactElement.innerHTML = `
                     <img src="${user.avatar}" alt="${user.name}" class="contact-avatar">
                     <div class="contact-info">
                         <h4>${user.name}</h4>
-                        <p>${user.online ? 'В сети' : 'Не в сети'}</p>
+                        <p>${user.username ? '@' + user.username : 'Нет юзернейма'}</p>
                     </div>
-                    <div class="online-indicator ${user.online ? '' : 'offline'}"></div>
+                    <div class="online-indicator"></div>
                 `;
                 
-                contactElement.addEventListener('click', () => selectChat(user));
+                contactElement.addEventListener('click', () => selectChat(user, index));
                 contactsList.appendChild(contactElement);
             });
         }
@@ -1079,25 +1209,25 @@
         }
 
         // Выбор чата
-        function selectChat(user) {
-            currentChat = user;
+        function selectChat(user, userId) {
+            currentChat = { ...user, id: userId };
             
             // Обновление заголовка чата
             chatAvatar.src = user.avatar;
             chatContactName.textContent = user.name;
-            chatContactStatus.textContent = user.online ? 'В сети' : 'Не в сети';
+            chatContactStatus.textContent = 'В сети';
             
             // Активация поля ввода сообщения
             messageInput.disabled = false;
             sendMessageBtn.disabled = false;
             
             // Показ сообщений
-            renderMessages(user.id);
+            renderMessages(userId);
             
             // Подсветка активного чата
             document.querySelectorAll('.contact').forEach(contact => {
                 contact.classList.remove('active');
-                if (parseInt(contact.dataset.userId) === user.id) {
+                if (parseInt(contact.dataset.userId) === userId) {
                     contact.classList.add('active');
                 }
             });
@@ -1145,6 +1275,16 @@
                 <div class="message-time">${time}</div>
             `;
             
+            // Сохраняем сообщение
+            if (!messages[currentChat.id]) {
+                messages[currentChat.id] = [];
+            }
+            messages[currentChat.id].push({
+                text: text,
+                time: time,
+                sent: true
+            });
+            
             messagesContainer.appendChild(messageElement);
             
             // Очистка поля ввода
@@ -1152,9 +1292,6 @@
             
             // Прокрутка к последнему сообщению
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // В реальном приложении здесь будет отправка на сервер
-            // и добавление в хранилище сообщений
         }
     </script>
 </body>
